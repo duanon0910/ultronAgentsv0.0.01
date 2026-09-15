@@ -1,0 +1,22 @@
+Screen {
+    background: black;
+    color: lime;
+}
+#left-pane {
+    width: 70%;
+    border-right: solid green;
+}
+#right-pane {
+    width: 30%;
+    padding: 1;
+    border: solid green;
+}
+Input {
+    dock: bottom;
+    background: black;
+    color: lime;
+    border: solid green;
+}
+Log {
+    color: lime;
+}

@@ -1,0 +1,27 @@
+[project]
+name = "ultron"
+version = "1.0.0"
+description = "Project Ultron: Autonomous Local AI Agent for Device and Network Administration"
+requires-python = ">=3.10"
+dependencies = [
+    "rich",
+    "textual",
+    "psutil",
+    "netmiko",
+    "paramiko",
+    "scapy",
+    "google-antigravity"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
