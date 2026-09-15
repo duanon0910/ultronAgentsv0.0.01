@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ULTRON — Hệ điều hành nhận thức</title>
+    <meta name="description" content="Giao diện trợ lý Ultron: khối cầu tri thức dạng hạt, hàng đợi tác vụ, mạng lưới thực thể và hệ thống thiết kế theo bảng màu phim Marvel." />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <!-- ============ RAIL ============ -->
+      <nav class="rail" aria-label="Điều hướng chính">
+        <div class="brand">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-label="Ultron" role="img">
+            <path d="M16 2.5 28 9v14L16 29.5 4 23V9L16 2.5Z" stroke="currentColor" stroke-width="1.4" />
+            <path d="M16 8.5 22.5 12v8L16 23.5 9.5 20v-8L16 8.5Z" stroke="currentColor" stroke-width="1" opacity=".55" />
+            <path d="M11.5 14.5h3.2M17.3 14.5h3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <circle cx="16" cy="19.4" r="1.2" fill="currentColor" />
+          </svg>
+          <div>
+            <div class="bn">ULTRON</div>
+            <div class="bs">Hệ điều hành nhận thức</div>
+          </div>
+        </div>
+
+        <p class="lbl">Lõi</p>
+        <div class="nav">
+          <button class="nav-item" data-view="cortex" aria-current="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="3.2" /></svg>
+            <span>Nhận thức</span><span class="n" id="numTask">6</span>
+          </button>
+          <button class="nav-item" data-view="net">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="6.5" r="2.2" /><circle cx="18.5" cy="6.5" r="2.2" /><circle cx="12" cy="17.5" r="2.2" /><path d="M7.4 7.8 10.6 15.6M16.6 7.8 13.4 15.6M7.7 6.5h8.6" /></svg>
+            <span>Mạng lưới</span><span class="n" id="numNode">184</span>
+          </button>
+        </div>
+
+        <p class="lbl">Nền tảng</p>
+        <div class="nav">
+          <button class="nav-item" data-view="sys">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="7" height="7" /><rect x="13" y="4" width="7" height="7" /><rect x="4" y="13" width="7" height="7" /><rect x="13" y="13" width="7" height="7" /></svg>
+            <span>Hệ thống thiết kế</span>
+          </button>
+        </div>
+
+        <div class="rail-foot">
+          <div>Cổ Loa · Hà Nội</div>
+          <div>Lõi cục bộ · GMT+7</div>
+          <div>Front-end build 03</div>
+        </div>
+      </nav>
+
+      <!-- ============ MAIN ============ -->
+      <main class="main">
+        <header class="topbar">
+          <div class="tb-l">
+            <h1 id="greet">Tôi đang nghe, Cường.</h1>
+            <p id="greetSub">Đang giám sát 4 nguồn · 184 thực thể tri thức</p>
+          </div>
+          <div class="tb-r">
+            <button class="cmd" id="cmdBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" /></svg>
+              <span>Ra lệnh</span><kbd>CTRL</kbd><kbd>K</kbd>
+            </button>
+            <span class="chip chip--cold" id="chipLoad"><i></i> Tải nhận thức 46%</span>
+            <span class="chip chip--red" id="chipTasks">2 việc cần bạn quyết</span>
+          </div>
+        </header>
+
+        <!-- ---------- NHẬN THỨC ---------- -->
+        <section class="view" id="view-cortex">
+          <div class="vh">
+            <div>
+              <h2>Lõi nhận thức</h2>
+              <p>Khối cầu ở giữa là bản đồ tri thức đang sống: mỗi hạt là một thực thể tôi theo dõi, hạt đỏ là thứ cần bạn quyết. Bề mặt phồng lên ở vùng đang có nhiều hoạt động.</p>
+            </div>
+            <div class="sp"><button class="btn btn--red" id="btnBrief">Tóm tắt tình hình</button></div>
+          </div>
+
+          <div class="cortex">
+            <!-- cột trái: khối cầu -->
+            <div class="stack">
+              <div class="orb-wrap">
+                <div class="orb-top">
+                  <span class="st"><i></i> <span id="orbState">Đang nói</span></span>
+                  <span class="mt" id="orbClock">--:--:--</span>
+                </div>
+                <div class="orb-stage">
+                  <canvas id="orbCanvas" aria-label="Khối cầu tri thức dạng hạt"></canvas>
+                  <div class="orb-cap">
+                    <div class="kv" id="orbNodes">184 thực thể · 512 liên kết</div>
+                    <div class="kn">Ultron</div>
+                    <div class="kd">Bản đồ tri thức</div>
+                  </div>
+                </div>
+                <div class="orb-legend">
+                  <span><i style="background: #bcbdc2"></i> Ổn định</span>
+                  <span><i style="background: #4d8ab5"></i> Đang học</span>
+                  <span><i style="background: #ff4a38"></i> Cần bạn quyết</span>
+                </div>
+              </div>
+
+              <div class="p">
+                <div class="ph"><h3>Nhịp hệ thống</h3><span class="mt">Thời gian thực</span></div>
+                <div class="pb">
+                  <div class="bars">
+                    <div class="bar">
+                      <div class="bl"><span class="k">Tải nhận thức</span><span class="v" id="mLoad">46%</span></div>
+                      <div class="track"><i id="tLoad" style="width: 46%"></i></div>
+                    </div>
+                    <div class="bar">
+                      <div class="bl"><span class="k">Độ tin cậy dữ liệu</span><span class="v" id="mConf">92%</span></div>
+                      <div class="track cold"><i id="tConf" style="width: 92%"></i></div>
+                    </div>
+                    <div class="bar">
+                      <div class="bl"><span class="k">Tác vụ tự chạy</span><span class="v" id="mAuto">7<small> / 9</small></span></div>
+                      <div class="track brass"><i id="tAuto" style="width: 78%"></i></div>
+                    </div>
+                    <div class="bar">
+                      <div class="bl"><span class="k">Giờ bạn tiết kiệm hôm nay</span><span class="v" id="mSave">2g 40ph</span></div>
+                      <div class="track"><i id="tSave" style="width: 58%"></i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- cột phải: hội thoại + hàng đợi -->
+            <div class="stack">
+              <div class="p">
+                <div class="ph"><h3>Đối thoại</h3><span class="mt">Ngữ cảnh: dự án Thanh toán</span></div>
+                <div class="pb">
+                  <div class="stream" id="stream">
+                    <article class="turn turn--u">
+                      <div class="who">Cường</div>
+                      <div class="tx"><p>Tối nay tôi nên làm gì trước?</p></div>
+                    </article>
+                    <article class="turn turn--x">
+                      <div class="who">Ultron<time>21:28</time></div>
+                      <div class="tx">
+                        <p>Tôi đã đọc lịch, hộp thư và repo của bạn. Việc duy nhất có hậu quả thật là <strong>bản nháp API thanh toán</strong>: hạn 08:30 sáng mai và đang chặn hai người.</p>
+                        <p>Còn <b class="r">2 việc cần bạn quyết</b> — báo giá bổ sung cho Vinpro và lời mời trình bày ngày 12/10. Phần còn lại tôi đã xử lý hoặc xếp lại; bạn không cần mở chúng ra.</p>
+                        <div class="readout">
+                          <div><div class="k">Nguồn đã đọc</div><div class="v">4</div></div>
+                          <div><div class="k">Cần bạn quyết</div><div class="v r">2</div></div>
+                          <div><div class="k">Tôi tự xử lý</div><div class="v">7</div></div>
+                          <div><div class="k">Rảnh còn lại</div><div class="v">2g 40ph</div></div>
+                        </div>
+                      </div>
+                    </article>
+                    <div class="thinking" id="pending" hidden><i></i><i></i><i></i> Đang suy luận trên bản đồ tri thức</div>
+                  </div>
+                  <form class="composer" id="composer" autocomplete="off">
+                    <input id="prompt" placeholder="Ra lệnh hoặc hỏi tôi… (ví dụ: dời buổi review sang chiều mai)" aria-label="Ra lệnh cho Ultron" />
+                    <button class="btn btn--red" type="submit">Gửi</button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="g2">
+                <div class="p">
+                  <div class="ph"><h3>Hàng đợi tác vụ</h3><span class="mt" id="qCount">9 tác vụ</span></div>
+                  <div class="pb pb--flush"><div class="queue" id="queue"></div></div>
+                </div>
+                <div class="p">
+                  <div class="ph"><h3>Tôi đã tự xử lý</h3><span class="mt">Hôm nay</span></div>
+                  <div class="pb pb--flush"><div class="rows" id="autoRows"></div></div>
+                </div>
+              </div>
+
+              <div class="p">
+                <div class="ph"><h3>Dòng suy luận</h3><button class="btn btn--sm" id="btnPause">Tạm dừng</button></div>
+                <div class="term" id="term"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- MẠNG LƯỚI ---------- -->
+        <section class="view" id="view-net" hidden>
+          <div class="vh">
+            <div>
+              <h2>Mạng lưới tri thức</h2>
+              <p>Cùng dữ liệu với khối cầu, nhưng trải phẳng: thực thể, liên kết và mức chú ý. Đỏ là điểm nóng — nơi tôi khuyên bạn can thiệp.</p>
+            </div>
+            <div class="sp"><button class="btn" id="btnReseed">Dựng lại bố cục</button></div>
+          </div>
+
+          <div class="stack">
+            <div class="net-wrap">
+              <canvas id="netCanvas" aria-label="Sơ đồ mạng lưới thực thể tri thức"></canvas>
+              <div class="net-hud">Thực thể <b id="hudN">184</b> · Liên kết <b id="hudE">512</b> · Điểm nóng <b id="hudH">3</b></div>
+            </div>
+
+            <div class="g3">
+              <div class="p">
+                <div class="ph"><h3>Thực thể trọng yếu</h3><span class="mt">Mức chú ý</span></div>
+                <div class="pb pb--flush"><div class="rows" id="entList"></div></div>
+              </div>
+              <div class="p">
+                <div class="ph"><h3>Liên kết mới</h3><span class="mt">24 giờ qua</span></div>
+                <div class="pb pb--flush"><div class="rows" id="edgeList"></div></div>
+              </div>
+              <div class="p">
+                <div class="ph"><h3>Mức chú ý 24 giờ</h3></div>
+                <div class="chart-wrap">
+                  <canvas id="chartSignal" aria-label="Biểu đồ mức chú ý 24 giờ"></canvas>
+                  <div class="chart-cap">đỏ = điểm nóng</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- HỆ THỐNG ---------- -->
+        <section class="view" id="view-sys" hidden>
+          <div class="vh">
+            <div>
+              <h2>Hệ thống thiết kế</h2>
+              <p>Bảng màu dựng từ tạo hình Ultron và color grading của phim: thép Charleston làm nền, bạc vibranium cho chữ, đỏ American Red cho mọi thứ cần bạn quyết, xanh thép lạnh cho dữ liệu.</p>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="p">
+              <div class="ph"><h3>Bảng màu</h3><span class="mt">Tạo hình & khung phim</span></div>
+              <div class="pb"><div class="sws" id="sws"></div></div>
+            </div>
+
+            <div class="g2">
+              <div class="p">
+                <div class="ph"><h3>Thang chữ</h3><span class="mt">3 họ chữ</span></div>
+                <div class="pb" id="typeScale"></div>
+              </div>
+              <div class="stack">
+                <div class="p">
+                  <div class="ph"><h3>Token & chuyển động</h3></div>
+                  <table id="specTable">
+                    <thead><tr><th>Token</th><th>Giá trị</th><th>Dùng cho</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="p">
+                  <div class="ph"><h3>Nguồn tham chiếu màu</h3></div>
+                  <div class="pb src">
+                    <ul>
+                      <li>Bảng màu nhân vật Ultron — bạc kim loại #A8A9AD, xám #BCBDC2, đỏ #B32134, xám than #2B2B2B: <a href="https://www.schemecolor.com/ultron.php" target="_blank" rel="noopener">SchemeColor — Ultron Color Scheme</a></li>
+                      <li>Bảng màu chủ đề phim — #4D1518, #951E22, #C72523, #B9BEBA, #4D8AB5, #1E2638: <a href="https://www.schemecolor.com/avengers-age-of-ultron-theme-colors.php" target="_blank" rel="noopener">SchemeColor — Avengers: Age of Ultron Theme</a></li>
+                      <li>Color grading thực tế của phim — xám #303131, #4F504F, gần đen #111112, xám sáng #ABADAB: <a href="https://framethrower.ai/movie-color-palettes/avengers-age-of-ultron-2015" target="_blank" rel="noopener">Framethrower — Age of Ultron (2015) palette</a></li>
+                      <li>Tạo hình Ultron Prime chủ yếu là bạc kim loại với điểm nhấn đỏ và mắt đỏ phát sáng: <a href="https://lylesmoviefiles.com/2017/08/18/hot-toys-ultron-prime-figure-review-avengers-age-ultron/" target="_blank" rel="noopener">Lyles Movie Files — Ultron Prime review</a>, <a href="https://tvtropes.org/pmwiki/pmwiki.php/Characters/MCUUltron" target="_blank" rel="noopener">TV Tropes — MCU Ultron</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p">
+              <div class="ph"><h3>Nguyên tắc</h3></div>
+              <div class="pb">
+                <div class="g3">
+                  <div>
+                    <p class="lbl" style="padding: 0">01 · Đỏ là hậu quả</p>
+                    <p>Màu đỏ chỉ xuất hiện khi có hậu quả thật: cần bạn quyết, quá hạn, đang chặn người khác. Không dùng đỏ để trang trí.</p>
+                  </div>
+                  <div>
+                    <p class="lbl" style="padding: 0">02 · Kim loại, không phát sáng</p>
+                    <p>Nền là thép và than; chỉ lõi, mắt và điểm nóng được phát sáng. Giữ độ tương phản chữ ≥ 4.5:1 trên nền #07080A.</p>
+                  </div>
+                  <div>
+                    <p class="lbl" style="padding: 0">03 · Nói ngắn, quyết nhanh</p>
+                    <p>Mỗi panel trả lời một câu hỏi. Ultron nêu kết luận trước, dữ liệu sau, và luôn đề nghị một hành động cụ thể.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- ============ ASIDE ============ -->
+      <aside class="aside" aria-label="Bảng phụ">
+        <div class="p">
+          <div class="ph"><h3>Tháng 9</h3><span class="mt" id="calMeta">2026</span></div>
+          <div class="pb">
+            <div class="mini-cal"><div class="mc" id="miniCal"></div></div>
+          </div>
+        </div>
+
+        <div class="p">
+          <div class="ph"><h3>Sắp tới</h3></div>
+          <div class="pb"><div class="ev-list" id="evList"></div></div>
+        </div>
+
+        <div class="p">
+          <div class="ph"><h3>Cần bạn quyết</h3><span class="mt" id="decideMeta">2 mục</span></div>
+          <div class="pb pb--flush"><div class="rows" id="decideRows"></div></div>
+        </div>
+
+        <div class="p">
+          <div class="ph"><h3>Hoạt động</h3><span class="mt">Rút gọn</span></div>
+          <div class="term" id="termMini"></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- mobile nav -->
+    <nav class="mnav" aria-label="Điều hướng (thiết bị nhỏ)">
+      <button data-view="cortex" aria-current="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="3.2" /></svg>Nhận thức
+      </button>
+      <button data-view="net">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="6.5" r="2.2" /><circle cx="18.5" cy="6.5" r="2.2" /><circle cx="12" cy="17.5" r="2.2" /><path d="M7.4 7.8 10.6 15.6M16.6 7.8 13.4 15.6M7.7 6.5h8.6" /></svg>Mạng lưới
+      </button>
+      <button data-view="sys">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="7" height="7" /><rect x="13" y="4" width="7" height="7" /><rect x="4" y="13" width="7" height="7" /><rect x="13" y="13" width="7" height="7" /></svg>Thiết kế
+      </button>
+    </nav>
+
+    <div class="scrim" id="scrim" hidden>
+      <div class="pal" role="dialog" aria-label="Bảng lệnh">
+        <input id="palInput" placeholder="Ra lệnh… (ví dụ: tóm tắt, dời họp, điểm nóng)" aria-label="Tìm lệnh" />
+        <div class="pal-list" id="palList"></div>
+      </div>
+    </div>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+    <script src="app.js"></script>
+  <script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>

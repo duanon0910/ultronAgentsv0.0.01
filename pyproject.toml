@@ -10,7 +10,8 @@ dependencies = [
     "netmiko",
     "paramiko",
     "scapy",
-    "google-antigravity"
+    "google-antigravity",
+    "pywebview"
 ]
 
 [project.optional-dependencies]

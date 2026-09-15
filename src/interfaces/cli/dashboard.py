@@ -4,7 +4,7 @@ from textual.widgets import Header, Footer, Static, Input, Log
 from textual.reactive import reactive
 import psutil
 
-from src.infrastructure.agent.loop import AgentLoop
+from src.infrastructure.agent.hermes_adapter import HermesAgentAdapter
 
 class VitalsPane(Static):
     cpu = reactive("CPU: 0%")
@@ -23,7 +23,7 @@ class UltronDashboard(App):
 
     def __init__(self):
         super().__init__()
-        self.agent = AgentLoop()
+        self.agent = HermesAgentAdapter()
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
@@ -35,13 +35,14 @@ class UltronDashboard(App):
         yield Footer()
 
     def on_mount(self) -> None:
-        self.log_pane.write_line("[bold green]Ultron v1.0 Agent Initialized...[/]")
+        self.log_pane.write_line("[bold green]Ultron v1.0 Agent Initialized (Hermes Core)...[/]")
 
-    def on_input_submitted(self, event: Input.Submitted) -> None:
+    async def on_input_submitted(self, event: Input.Submitted) -> None:
         command = event.value
         self.log_pane.write_line(f"ultron@sys:~$ {command}")
         event.input.value = ""
         
-        # Route to agent loop
-        response = self.agent.process_input(command)
+        # Route to agent asynchronously
+        response = await self.agent.process_input(command)
         self.log_pane.write_line(response)
+
